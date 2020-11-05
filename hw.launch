@@ -1,0 +1,16 @@
+<launch>
+	<arg name="turtle1_name" default="tortilla1"/>
+	<arg name="turtle2_name" default="tortilla2"/>
+	<node pkg='turtlesim' type='turtlesim_node' name='first' output='screen'>
+	<remap from="/turtle1/pose" to="$(arg turtle1_name)/pose"/>
+	</node>
+	<node pkg='tortilla' type='spawner.py' name='turtle_spawner' output='screen'>
+	<param name="turtle2_name" value="$(arg turtle2_name)" type="string"/>
+	</node>
+	<node pkg='turtlesim' type='turtle_teleop_key' name='control_node' output='screen'/>
+	<node pkg='tortilla' type='listener.py' name='turtle_listener' output='screen'>
+	<remap from="/turtle1/pose" to="$(arg turtle1_name)/pose"/>
+        <remap from="/turtle2/pose" to="$(arg turtle2_name)/pose"/>
+        <remap from="/turtle2/cmd_vel" to="$(arg turtle2_name)/cmd_vel"/>
+	</node>
+</launch>
